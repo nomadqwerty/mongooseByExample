@@ -37,7 +37,14 @@ const TestSchema = new Schema({
         type:Number,
         required:[true,'please include age']
     }
-})
+},{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },{methods:{
+    funct(){
+        return mongoose.model('Test').find({name:this.name},cb)
+    }
+}})
 
 
 // schema are basically useless on there own. to make use of a schema we need to convert them to Models.
@@ -46,24 +53,62 @@ const TestSchema = new Schema({
 const Test = mongoose.model('Test',TestSchema)
 const Doc = new Test()
 // default _id properties are inserted in the schemas
-console.log(TestSchema.path('_id'))
+// console.log(TestSchema.path('_id'))
 //ie :- ObjectId {
-//     path: '_id',
-//     instance: 'ObjectID',
-//     validators: [],
-//     getters: [],
-//     setters: [ [Function: resetId] ],
-//     _presplitPath: [ '_id' ],
-//     options: SchemaObjectIdOptions { auto: true, type: 'ObjectId' },
-//     _index: null,
-//     defaultValue: [Function: defaultId] { '$runBeforeSetters': true },
-//     [Symbol(mongoose#schemaType)]: true       
-//   }
+    //     path: '_id',
+    //     instance: 'ObjectID',
+    //     validators: [],
+    //     getters: [],
+    //     setters: [ [Function: resetId] ],
+    //     _presplitPath: [ '_id' ],
+    //     options: SchemaObjectIdOptions { auto: true, type: 'ObjectId' },
+    //     _index: null,
+    //     defaultValue: [Function: defaultId] { '$runBeforeSetters': true },
+    //     [Symbol(mongoose#schemaType)]: true       
+    //   }
+    
+    
+    // _id props are used to hold the object id number
+    // by default mongoose gives our models id numbers, of the schemaType ObectId
+    // console.log(typeof Doc)
+    
+    
+    // we can overwrite mongoose id with our costum ids but be careful
+    
+    // //////document methods
+    // instance methods can be added in to the schema object as the second parameter ie. new Schema({name:String},{methods: functName(){}})
+    // or nameOfSchema.methods.functName = function(){do something}
+    // console.log(TestSchema.methods)
+    // all instances of the schema will inherit the schema instance methods
+    // console.log(Test.methods)
+
+    // virtual fields are properties of the object that we can get and set but its never persisted to the db 
+    let personSchema = new Schema({name:{
+        first:String,
+        last:String
+    }})
+    
+    const Person = mongoose.model('Person', personSchema)
+
+    
+    const dave = new Person({name:{first:'dave',last:'mike'}})
+
+    // virtual fields are not pesisted
+    // add virtual fields like so 
+    personSchema.virtual('fullName').get(function(){
+        return this.name.first + ' ' + this.name.last
+    })
+    
+    // console.log(dave.fullName)
 
 
-// _id props are used to hold the object id number
-// by default mongoose gives our models id numbers, of the schemaType ObectId
-console.log(typeof Doc)
+    // Aliases. 
+    const humanSchema = new Schema({n:{
+        type:String,
+        alias:'name'
+    }})
 
+    const Man = mongoose.model('Man', humanSchema)
 
-// we can overwrite mongoose id with our costum ids but be careful
+    const john = new Man({name:'john'})
+    console.log(john)
