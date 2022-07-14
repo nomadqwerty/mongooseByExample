@@ -102,7 +102,8 @@ const Doc = new Test()
     // console.log(dave.fullName)
 
 
-    // Aliases. 
+    // Aliases. Aliases are a particular type of virtual where the getter and setter seamlessly get and set another property. This is handy for saving network bandwidth, so you can convert a short property name stored in the database into a longer name for code readability.
+
     const humanSchema = new Schema({n:{
         type:String,
         alias:'name'
@@ -112,3 +113,5 @@ const Doc = new Test()
 
     const john = new Man({name:'john'})
     console.log(john)
+
+    // options
