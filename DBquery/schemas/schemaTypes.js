@@ -276,3 +276,43 @@ console.log(mongoose.Schema.Types.Boolean.convertToFalse);
 
 mongoose.Schema.Types.Boolean.convertToFalse.add('nay');
 console.log(new M({ b: 'nay' }).b); // false
+
+////////////////
+// arrays
+// Mongoose supports arrays of SchemaTypes and arrays of subdocuments. Arrays of SchemaTypes are also called primitive arrays, and arrays of subdocuments are also called document arrays.
+
+const arraySchema = new mongoose.Schema({
+    arrayOfstr:[String],
+    arrayOfNums:[Number],
+    arrayOfDate:[Date],
+})
+
+// Arrays are special because they implicitly have a default value of [] (empty array)
+const ArrayModel = mongoose.model('ArrayModel',arraySchema)
+
+const InstArrDoc = new ArrayModel()
+
+console.log(InstArrDoc)
+
+////////////////
+// maps
+// A MongooseMap is a subclass of JavaScript's Map class. In these docs, we'll use the terms 'map' and MongooseMap interchangeably. In Mongoose, maps are how you create a nested document with arbitrary keys.
+
+// Note: In Mongoose Maps, keys must be strings in order to store the document in MongoDB.
+
+// However, since socialMediaHandles is a map, you must use .get() to get the value of a key and .set() to set the value of a key.
+
+const mapSchema = new mongoose.Schema({
+    map:Map,
+})
+
+const MapModel = mongoose.model('MapModel',mapSchema)
+
+const InstMapModel = new MapModel({
+    map: new Map([['keyStr',true]])
+})
+
+InstMapModel.map.set('key1',1)
+InstMapModel.map.get('key1')
+console.log(InstMapModel)
+
