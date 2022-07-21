@@ -114,4 +114,4 @@ const Doc = new Test()
     const john = new Man({name:'john'})
     console.log(john)
 
-    // options
+    
