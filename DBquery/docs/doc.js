@@ -70,4 +70,54 @@ console.log(docss)
 console.log(testMod)
 
 // what is a subDoc?
-// it is still a doc like another, it has a schema and a model and all the features that come with top level schemas
+// it is still a doc like another, it has a schema and a model and all the features that come with top level schemas. but can only be saved when the parent is saved 
+// saving and validating subdocs, still depends on the parents if the parent is validated and saved so will the subDoc
+
+// subDoc vs nested paths.
+// nested paths are slightly differnt from subDocs.
+// below is an example of nested paths and subdocs
+// Subdocument
+const subdocumentSchema = new mongoose.Schema({
+    child: new mongoose.Schema({ name: String, age: Number })
+  });
+  const Subdoc = mongoose.model('Subdoc', subdocumentSchema);
+  
+  // Nested path
+  const nestedSchema2 = new mongoose.Schema({
+    child: { name: String, age: Number }
+  });
+  const Nested = mongoose.model('Nested', nestedSchema);
+
+  // diff, nested paths cabt be undefined ,  but subDoc can be undefined.
+
+  const nestDoc = new Nested({})
+  const subD = new Subdoc({})
+  subD.child='name'
+  console.log(subD.child)
+  console.log(nestDoc.child)
+
+
+  ///////////////////////
+  // subdoc default.
+  // paths of subdocs atre undefined by default. and mongoose cant set default if path is nullish
+
+  const newScheme = new Schema({
+    child:new Schema({
+        name:{
+            type:String,
+            default:'oliverTwisted'
+        }
+    })
+  })
+
+const Mod = mongoose.model('Mod', newScheme)
+const aDocc = new Mod({child:'mary'})
+// find subDoc by id
+// each doc has an id bhy default
+// addding subDocs to arrays
+// const pSc = new Schema({})
+// const p = mongoose.model('p',pSc)
+// p.children.push({name:'iot'})
+// console.log(p.children)
+
+// finding parents to subdoc, doc.subdoc.parent()
