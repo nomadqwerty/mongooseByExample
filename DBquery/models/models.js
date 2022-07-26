@@ -47,22 +47,3 @@
 // // use .updateOne 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Documents
-
-// docs vs models
-// these are two distinct classes. the Models class is a subclass of the document class.
-// when we use the Model class we can create diff instance sof the class called documents
-
-let {Schema, default: mongoose} = require('mongoose')
-
-let aSchema = new Schema({
-    name:String,
-})
-
-const A_Model = mongoose.model('A_Model',aSchema)
-
-const docInstaceOfModel = new A_Model({name:'instance of model'})
-
-console.log( docInstaceOfModel instanceof A_Model)
-console.log(docInstaceOfModel instanceof mongoose.Model)
-console.log(docInstaceOfModel instanceof mongoose.Document)
