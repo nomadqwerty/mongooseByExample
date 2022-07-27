@@ -10,4 +10,8 @@ const {Schema,mongoose, models} = require('mongoose')
 // {'name':'john'} - this is a filter to query the db for the name john.
 const sch = new Schema({name:'string'})
 const Model = mongoose.model('Model',sch)
-const person = Model.find({'name':'john'})
+// const person = Model.find({'name':'john'},(err,data)=>{
+//     console.log(data)
+// // })
+
+// queries arent actually promises
